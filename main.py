@@ -24,20 +24,82 @@ def make_move(x, y, player):
     if 0 <= x < 3 and 0 <= y < 3 and board[y][x] is None:
         board[y][x] = player
         return True
-    return False
+    else:
+        print("Invalid move. Try again.")
+        return False
 
-x = int(input("Enter x coordinate (0-2): "))
-y = int(input("Enter y coordinate (0-2): "))
+def get_winner(board):
+    # List all possible lines (rows, columns, diagonals)
+    lines = [
+        # Rows
+        [board[0][0], board[0][1], board[0][2]],
+        [board[1][0], board[1][1], board[1][2]],
+        [board[2][0], board[2][1], board[2][2]],
+        # Columns
+        [board[0][0], board[1][0], board[2][0]],
+        [board[0][1], board[1][1], board[2][1]],
+        [board[0][2], board[1][2], board[2][2]],
+        # Diagonals
+        [board[0][0], board[1][1], board[2][2]],
+        [board[0][2], board[1][1], board[2][0]],
+    ]
+    for line in lines:
+        # print(line[0], line[1], line[2])
+        if line[0] is not None and line[0] == line[1] == line[2]:
+            return line[0]
 
-print(make_move(x, y, "X"))
+    return None 
+def is_board_full(board):
+    for row in board:
+        if None in row:
+            return False
+    return True
 
-print(make_move(1, 1, "O"))  # Example move for player "O"
+
+print("Welcome to Tic Tac Toe! \nYou are player 'X'")
+
+print("Here is the initial board:")
+print(render_board(board))
+
+while True:
+    # Player X move
+    while True:
+        print("\nPlayer 'X', it's your turn!")
+        x = int(input("Enter x coordinate (0-2): "))
+        y = int(input("Enter y coordinate (0-2): "))
+        if make_move(x, y, "X"):
+            break
+    print(render_board(board))
+    winner = get_winner(board)
+    if winner:
+        print(f"\n🎉 Player '{winner}' wins!")
+        break
+    if is_board_full(board):
+        print("\nIt's a draw! The board is full.")
+        break
+
+    # Player O move
+    while True:
+        print("\nPlayer 'O', it's your turn!")
+        x = int(input("Enter x coordinate (0-2): "))
+        y = int(input("Enter y coordinate (0-2): "))
+        if make_move(x, y, "O"):
+            break
+    print(render_board(board))
+    winner = get_winner(board)
+    if winner:
+        print(f"\n🎉 Player '{winner}' wins!")
+        break
+    if is_board_full(board):
+        print("\nIt's a draw! The board is full.")
+        break
+
 # ...existing code...
 #Board[y][x] = "X" or "O"
 
 # Example usage
-board[0][1] = "X"
-board[1][1] = "O"
-# Test the function
-print(render_board(board))
+# board[0][1] = "X"
+# board[1][1] = "O"
+#  Test the function
+# print(render_board(board))
 
