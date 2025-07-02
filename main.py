@@ -1,3 +1,5 @@
+import random
+
 def new_board():
     return [
         [None, None, None],
@@ -55,6 +57,15 @@ def is_board_full(board):
             return False
     return True
 
+def random_ai(board, player):
+    
+    empty_cells = []
+    for y in range(3):
+        for x in range(3):
+            if board[y][x] is None:
+                empty_cells.append((x, y))
+    return random.choice(empty_cells)
+
 
 print("Welcome to Tic Tac Toe! \nYou are player 'X'")
 
@@ -79,14 +90,16 @@ while True:
         break
 
     # Player O move
-    while True:
-        print("\nPlayer 'O', it's your turn!")
-        x = int(input("Enter x coordinate (0-2): "))
-        y = int(input("Enter y coordinate (0-2): "))
-        if make_move(x, y, "O"):
-            break
-    print(render_board(board))
-    winner = get_winner(board)
+    # while True:
+    #     print("\nPlayer 'O', it's your turn!")
+    #     x = int(input("Enter x coordinate (0-2): "))
+    #     y = int(input("Enter y coordinate (0-2): "))
+    #     if make_move(x, y, "O"):
+    #         break
+    # print(render_board(board))
+    # winner = get_winner(board)
+    x, y = random_ai(board, 'O')
+    make_move(x, y, 'O')
     if winner:
         print(f"\n🎉 Player '{winner}' wins!")
         break
