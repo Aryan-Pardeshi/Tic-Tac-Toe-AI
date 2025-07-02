@@ -120,13 +120,27 @@ def minimax_ai(board, player):
 
 def main():
     board = new_board()
-    print("Welcome to Tic Tac Toe! \nYou are player 'X'")
+    # Ask the player to choose 'X' or 'O'
+    while True:
+        player_choice = input("Do you want to be 'X' or 'O'? (X goes first): ").strip().upper()
+        if player_choice in ['X', 'O']:
+            break
+        print("Invalid choice. Please enter 'X' or 'O'.\n")
+    human = player_choice
+    ai = 'O' if human == 'X' else 'X'
+    current_player = 'X'
+
+    print(f"Welcome to Tic Tac Toe! \nYou are player '{human}'")
     print("Here is the initial board:")
     print(render_board(board))
 
     while True:
-        x, y = human_player(board, "X")
-        make_move(board, x, y, "X")
+        if current_player == human:
+            x, y = human_player(board, human)
+            make_move(board, x, y, human)
+        else:
+            x, y = minimax_ai(board, ai)
+            make_move(board, x, y, ai)
         print(render_board(board))
         winner = get_winner(board)
         if winner:
@@ -135,18 +149,7 @@ def main():
         if is_board_full(board):
             print("\nIt's a draw! The board is full.")
             break
-
-        x, y = minimax_ai(board, 'O')
-
-        make_move(board, x, y, 'O')
-        print(render_board(board))
-        winner = get_winner(board)
-        if winner:
-            print(f"\n🎉 Player '{winner}' wins!")
-            break
-        if is_board_full(board):
-            print("\nIt's a draw! The board is full.")
-            break
+        current_player = get_opponent(current_player)
 
 if __name__ == '__main__':
     main()
